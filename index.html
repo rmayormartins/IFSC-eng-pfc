@@ -461,6 +461,57 @@ var ANEXOS=[
     return c;
   }
 },
+/* IV - MPQ (defesa de proposta / equivalente a TCC 1) */
+{
+  num:"IV",id:"anexo4mpq",tags:["orientador","banca"],variant:"Proposta · MPQ",
+  title:"Ata de Sessão de Defesa de Proposta de PFC",
+  who:"Orientador(a) / presidente da banca",
+  desc:"Defesa da proposta de PFC na unidade curricular Metodologia de Pesquisa (MPQ129009). Equivale à ata de TCC 1.",
+  note:"Sessão privada de avaliação da proposta. Lavrada pelo(a) presidente da banca e encaminhada ao(à) articulador(a) de PFC.",
+  fields:[
+    {sec:"Sessão"},
+    {k:"dataDefesa",t:"date",label:"Data da sessão",common:true,half:true},
+    {k:"horaInicio",t:"time",label:"Horário de abertura",half:true},
+    {sec:"Proposta"},
+    {k:"estudante",t:"text",label:"Nome do(a) estudante",common:true},
+    {k:"matricula",t:"text",label:"Matrícula",common:true,half:true},
+    {k:"orientador",t:"text",label:"Orientador(a) / presidente",common:true,half:true},
+    {k:"titulo",t:"textarea",label:"Título da proposta",common:true},
+    {k:"tempoApres",t:"text",label:"Tempo de apresentação (min)",half:true},
+    {k:"conceito",t:"text",label:"Conceito obtido",half:true},
+    {k:"resultado",t:"radio",label:"Resultado",opts:["APROVADO","APROVADO COM RESSALVAS","REPROVADO"]},
+    {k:"horaFim",t:"time",label:"Horário de encerramento",half:true},
+    {k:"observacoes",t:"textarea",label:"Observações"},
+    {sec:"Banca examinadora"},
+    {k:"orientadorTit",t:"text",label:"Titulação do(a) orientador(a)",common:true,half:true},
+    {k:"av1",t:"text",label:"Avaliador(a) — nome",half:true},
+    {k:"av1Tit",t:"text",label:"Avaliador(a) — titulação",half:true},
+    {k:"av1Inst",t:"text",label:"Avaliador(a) — instituição",half:true}
+  ],
+  build:function(v){
+    var dp=dparts(v.dataDefesa),t1=hm(v.horaInicio),t2=hm(v.horaFim);
+    var c=instHeader().concat(annexTitle("IV",this.title));
+    c.push(P(["Aos ",dp.d," dias do mês de ",dp.mes," de ",dp.y,", às ",t1.h," horas e ",t1.m," minutos, no IFSC – Câmpus São José, reuniu-se banca examinadora para, em sessão privada, proceder à avaliação da proposta de Projeto Final de Curso do(a) estudante ",fld(v.estudante,38),", matrícula n.º ",fld(v.matricula,14),", apresentado como requisito parcial para aprovação na unidade curricular Metodologia de Pesquisa (MPQ129009)."]));
+    c.push(P(["A sessão foi aberta pelo(a) docente ",fld(v.orientador,38),", orientador(a) e presidente da banca examinadora, que apresentou formalmente os membros da banca. Em seguida, a palavra foi concedida ao(à) estudante, que expôs a proposta de Projeto Final de Curso intitulado “",fld(v.titulo,52),"”, no tempo de ",fld(v.tempoApres,5)," minutos."]));
+    c.push(P("Encerrada a apresentação, cada membro da banca examinadora dirigiu suas arguições ao(à) autor(a). Concluída a fase de arguição, iniciou-se a avaliação da defesa da proposta de PFC."));
+    c.push(P(["Após a avaliação, o(a) estudante obteve o conceito ",fld(v.conceito,8),", e a banca examinadora considerou o trabalho:"]));
+    var r=v.resultado||"";
+    c.push({style:"body",margin:[14,2,0,11],stack:[
+      {text:check(r==="APROVADO")+" APROVADO;"},
+      {text:check(r==="APROVADO COM RESSALVAS")+" APROVADO COM RESSALVAS (descritas em observações);"},
+      {text:check(r==="REPROVADO")+" REPROVADO."}
+    ]});
+    c.push(P("A conclusão do processo dar-se-á mediante a entrega da versão definitiva da proposta de PFC, atestada pelo(a) docente orientador(a) ao(à) articulador(a) de PFC."));
+    c.push(P(["Cumpridas as formalidades, às ",t2.h," horas e ",t2.m," minutos, eu, presidente da banca examinadora, encerrei a sessão e lavrei a presente ata, que, após lida e aprovada, será assinada pelos membros da banca examinadora e pelo(a) estudante avaliado(a)."]));
+    c.push({text:"Observações:",bold:true,fontSize:11,margin:[0,2,0,4]});
+    c.push({text:(v.observacoes||"").trim()||rep("_",92)+"\n"+rep("_",92),style:"body",margin:[0,0,0,14]});
+    c.push({text:"BANCA EXAMINADORA",bold:true,alignment:"center",fontSize:11,margin:[0,6,0,0]});
+    c.push(sig((v.orientador||"").trim()?v.orientador+", "+(v.orientadorTit||"titulação"):"Nome do(a) orientador(a), titulação","IFSC – Câmpus São José"));
+    c.push(sig((v.av1||"").trim()?v.av1+", "+(v.av1Tit||"titulação"):"Nome do(a) avaliador(a), titulação",(v.av1Inst||"").trim()||"Instituição"));
+    c.push(sig((v.estudante||"").trim()||"Nome do(a) estudante"));
+    return c;
+  }
+},
 /* IV */
 {
   num:"IV",id:"anexo4",tags:["orientador","banca"],variant:"Defesa final",
@@ -512,57 +563,6 @@ var ANEXOS=[
     c.push(sig((v.orientador||"").trim()?v.orientador+", "+(v.orientadorTit||"titulação"):"Nome do(a) orientador(a), titulação","IFSC – Câmpus São José"));
     c.push(sig((v.av1||"").trim()?v.av1+", "+(v.av1Tit||"titulação"):"Nome do(a) avaliador(a), titulação",(v.av1Inst||"").trim()||"Instituição"));
     c.push(sig((v.av2||"").trim()?v.av2+", "+(v.av2Tit||"titulação"):"Nome do(a) avaliador(a), titulação",(v.av2Inst||"").trim()||"Instituição"));
-    return c;
-  }
-},
-/* IV - MPQ (defesa de proposta / equivalente a TCC 1) */
-{
-  num:"IV",id:"anexo4mpq",tags:["orientador","banca"],variant:"Proposta · MPQ",
-  title:"Ata de Sessão de Defesa de Proposta de PFC",
-  who:"Orientador(a) / presidente da banca",
-  desc:"Defesa da proposta de PFC na unidade curricular Metodologia de Pesquisa (MPQ129009). Equivale à ata de TCC 1.",
-  note:"Sessão privada de avaliação da proposta. Lavrada pelo(a) presidente da banca e encaminhada ao(à) articulador(a) de PFC.",
-  fields:[
-    {sec:"Sessão"},
-    {k:"dataDefesa",t:"date",label:"Data da sessão",common:true,half:true},
-    {k:"horaInicio",t:"time",label:"Horário de abertura",half:true},
-    {sec:"Proposta"},
-    {k:"estudante",t:"text",label:"Nome do(a) estudante",common:true},
-    {k:"matricula",t:"text",label:"Matrícula",common:true,half:true},
-    {k:"orientador",t:"text",label:"Orientador(a) / presidente",common:true,half:true},
-    {k:"titulo",t:"textarea",label:"Título da proposta",common:true},
-    {k:"tempoApres",t:"text",label:"Tempo de apresentação (min)",half:true},
-    {k:"conceito",t:"text",label:"Conceito obtido",half:true},
-    {k:"resultado",t:"radio",label:"Resultado",opts:["APROVADO","APROVADO COM RESSALVAS","REPROVADO"]},
-    {k:"horaFim",t:"time",label:"Horário de encerramento",half:true},
-    {k:"observacoes",t:"textarea",label:"Observações"},
-    {sec:"Banca examinadora"},
-    {k:"orientadorTit",t:"text",label:"Titulação do(a) orientador(a)",common:true,half:true},
-    {k:"av1",t:"text",label:"Avaliador(a) — nome",half:true},
-    {k:"av1Tit",t:"text",label:"Avaliador(a) — titulação",half:true},
-    {k:"av1Inst",t:"text",label:"Avaliador(a) — instituição",half:true}
-  ],
-  build:function(v){
-    var dp=dparts(v.dataDefesa),t1=hm(v.horaInicio),t2=hm(v.horaFim);
-    var c=instHeader().concat(annexTitle("IV",this.title));
-    c.push(P(["Aos ",dp.d," dias do mês de ",dp.mes," de ",dp.y,", às ",t1.h," horas e ",t1.m," minutos, no IFSC – Câmpus São José, reuniu-se banca examinadora para, em sessão privada, proceder à avaliação da proposta de Projeto Final de Curso do(a) estudante ",fld(v.estudante,38),", matrícula n.º ",fld(v.matricula,14),", apresentado como requisito parcial para aprovação na unidade curricular Metodologia de Pesquisa (MPQ129009)."]));
-    c.push(P(["A sessão foi aberta pelo(a) docente ",fld(v.orientador,38),", orientador(a) e presidente da banca examinadora, que apresentou formalmente os membros da banca. Em seguida, a palavra foi concedida ao(à) estudante, que expôs a proposta de Projeto Final de Curso intitulado “",fld(v.titulo,52),"”, no tempo de ",fld(v.tempoApres,5)," minutos."]));
-    c.push(P("Encerrada a apresentação, cada membro da banca examinadora dirigiu suas arguições ao(à) autor(a). Concluída a fase de arguição, iniciou-se a avaliação da defesa da proposta de PFC."));
-    c.push(P(["Após a avaliação, o(a) estudante obteve o conceito ",fld(v.conceito,8),", e a banca examinadora considerou o trabalho:"]));
-    var r=v.resultado||"";
-    c.push({style:"body",margin:[14,2,0,11],stack:[
-      {text:check(r==="APROVADO")+" APROVADO;"},
-      {text:check(r==="APROVADO COM RESSALVAS")+" APROVADO COM RESSALVAS (descritas em observações);"},
-      {text:check(r==="REPROVADO")+" REPROVADO."}
-    ]});
-    c.push(P("A conclusão do processo dar-se-á mediante a entrega da versão definitiva da proposta de PFC, atestada pelo(a) docente orientador(a) ao(à) articulador(a) de PFC."));
-    c.push(P(["Cumpridas as formalidades, às ",t2.h," horas e ",t2.m," minutos, eu, presidente da banca examinadora, encerrei a sessão e lavrei a presente ata, que, após lida e aprovada, será assinada pelos membros da banca examinadora e pelo(a) estudante avaliado(a)."]));
-    c.push({text:"Observações:",bold:true,fontSize:11,margin:[0,2,0,4]});
-    c.push({text:(v.observacoes||"").trim()||rep("_",92)+"\n"+rep("_",92),style:"body",margin:[0,0,0,14]});
-    c.push({text:"BANCA EXAMINADORA",bold:true,alignment:"center",fontSize:11,margin:[0,6,0,0]});
-    c.push(sig((v.orientador||"").trim()?v.orientador+", "+(v.orientadorTit||"titulação"):"Nome do(a) orientador(a), titulação","IFSC – Câmpus São José"));
-    c.push(sig((v.av1||"").trim()?v.av1+", "+(v.av1Tit||"titulação"):"Nome do(a) avaliador(a), titulação",(v.av1Inst||"").trim()||"Instituição"));
-    c.push(sig((v.estudante||"").trim()||"Nome do(a) estudante"));
     return c;
   }
 },
