@@ -86,6 +86,10 @@ a{color:var(--green)}
 .byline .gh svg{width:12px;height:12px;vertical-align:-2px;margin-right:3px}
 .byline .sep{margin:0 6px;color:var(--line-strong)}
 .byline .dash{margin:0 4px;color:var(--muted)}
+.reglink{margin:14px 0 0;font-size:13px;font-family:"JetBrains Mono",monospace;display:inline-flex;align-items:center}
+.reglink svg{width:14px;height:14px;margin-right:6px;color:var(--green);flex:none}
+.reglink a{color:var(--green-ink);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}
+.reglink a:hover{border-bottom-color:var(--green-bright)}
 
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px}
 .chip{
@@ -276,6 +280,7 @@ footer code{font-family:"JetBrains Mono",monospace;font-size:11.5px}
     <div class="lead">
       <h1>Gerador de anexos do Projeto Final de Curso</h1>
       <p>Escolha o anexo, preencha os campos e baixe o PDF pronto. Dados como nome, matrícula, título e orientador(a) são reaproveitados entre os anexos na mesma sessão.</p>
+      <p class="reglink"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 1.6H4.2c-.6 0-1 .4-1 1v10.8c0 .6.4 1 1 1h7.6c.6 0 1-.4 1-1V5.5L9 1.6Z"/><path d="M9 1.6V5.5h3.8"/><path d="M5.6 8.6h4.8M5.6 11h4.8"/></svg><a href="https://wiki.sj.ifsc.edu.br/images/a/a3/Regulamento_PFC_-_EngTelecom_1290_-_APROVADO_assinado.pdf" target="_blank" rel="noopener noreferrer">Regulamento PFC Eng Telecom 1290</a></p>
     </div>
     <div class="filters" id="filters">
       <button class="chip" data-f="todos" aria-pressed="true">Todos</button>
