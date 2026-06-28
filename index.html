@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anexos PFC · Engenharia de Telecomunicações · IFSC São José</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.10/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.10/vfs_fonts.js"></script>
+<style>
+:root{
+  --paper:#f5f6f8;
+  --surface:#ffffff;
+  --surface-2:#fbfcfd;
+  --ink:#16202e;
+  --body:#37424f;
+  --muted:#727d8a;
+  --line:#e3e7ec;
+  --line-strong:#cdd4dc;
+  --green:#1f7a4d;
+  --green-bright:#2fa866;
+  --green-tint:#eaf5ef;
+  --green-ink:#155a39;
+  --amber:#b07414;
+  --amber-tint:#fdf4e3;
+  --shadow:0 1px 2px rgba(22,32,46,.05),0 8px 24px rgba(22,32,46,.06);
+  --radius:14px;
+  --radius-sm:9px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:"IBM Plex Sans",system-ui,sans-serif;
+  background:var(--paper);
+  color:var(--body);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+button{font-family:inherit;cursor:pointer}
+a{color:var(--green)}
+
+/* ---------- Top bar ---------- */
+.topbar{
+  background:var(--surface);
+  border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:30;
+}
+.topbar-in{
+  max-width:1180px;margin:0 auto;padding:14px 22px;
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+}
+.mark{
+  font-family:"Chakra Petch",sans-serif;font-weight:700;
+  font-size:20px;letter-spacing:.5px;color:var(--ink);
+  display:flex;align-items:baseline;gap:10px;line-height:1;
+}
+.mark .pfc{color:var(--green)}
+.mark .dot{width:6px;height:6px;border-radius:50%;background:var(--green-bright);display:inline-block;transform:translateY(-2px)}
+.sub{font-size:12.5px;color:var(--muted);font-weight:500}
+.sub strong{color:var(--body);font-weight:600}
+.badge-inst{
+  margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:11px;
+  color:var(--green-ink);background:var(--green-tint);
+  border:1px solid #cfe7da;border-radius:999px;padding:5px 11px;font-weight:500;
+  text-decoration:none;white-space:nowrap;transition:background .15s,border-color .15s;
+}
+.badge-inst:hover{background:#dcefe3;border-color:var(--green-bright)}
+
+/* ---------- Layout ---------- */
+.wrap{max-width:1180px;margin:0 auto;padding:26px 22px 60px}
+
+/* ---------- Catalog ---------- */
+.lead{margin:6px 0 22px}
+.lead h1{
+  font-family:"Chakra Petch",sans-serif;font-weight:600;color:var(--ink);
+  font-size:27px;letter-spacing:.2px;margin:0 0 8px;line-height:1.15;
+}
+.lead p{margin:0;color:var(--muted);font-size:14.5px;max-width:640px}
+.subbar{background:var(--surface-2);border-bottom:1px solid var(--line)}
+.subbar-in{max-width:1180px;margin:0 auto;padding:7px 22px;display:flex;align-items:center;gap:6px 16px;flex-wrap:wrap}
+.subbar-in .byline{flex:1 1 auto;min-width:0}
+.version{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);font-weight:500;white-space:nowrap}
+.byline{margin:0;font-family:"JetBrains Mono",monospace;font-size:11px;line-height:1.5;color:var(--muted)}
+.byline a{color:var(--green-ink);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}
+.byline a:hover{border-bottom-color:var(--green-bright)}
+.byline strong{color:var(--ink);font-weight:600}
+.byline .gh{white-space:nowrap}
+.byline .gh svg{width:12px;height:12px;vertical-align:-2px;margin-right:3px}
+.byline .sep{margin:0 6px;color:var(--line-strong)}
+.byline .dash{margin:0 4px;color:var(--muted)}
+.reglink{margin:14px 0 0;font-size:13px;font-family:"JetBrains Mono",monospace;display:inline-flex;align-items:center}
+.reglink svg{width:14px;height:14px;margin-right:6px;color:var(--green);flex:none}
+.reglink a{color:var(--green-ink);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}
+.reglink a:hover{border-bottom-color:var(--green-bright)}
+
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px}
+.chip{
+  font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:500;
+  background:var(--surface);border:1px solid var(--line-strong);color:var(--body);
+  padding:7px 13px;border-radius:999px;transition:.12s;
+}
+.chip:hover{border-color:var(--green-bright);color:var(--green-ink)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+
+.grid{
+  display:grid;gap:14px;
+  grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
+}
+.card{
+  position:relative;text-align:left;background:var(--surface);
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 18px 16px;box-shadow:var(--shadow);
+  transition:transform .12s,border-color .12s,box-shadow .12s;
+  display:flex;flex-direction:column;gap:8px;min-height:148px;overflow:hidden;
+}
+.card:hover{transform:translateY(-2px);border-color:var(--green-bright);
+  box-shadow:0 2px 4px rgba(22,32,46,.06),0 16px 36px rgba(22,32,46,.1)}
+.card .num{
+  position:absolute;right:-8px;top:-14px;
+  font-family:"Chakra Petch",sans-serif;font-weight:700;
+  font-size:78px;line-height:1;color:#eef1f4;letter-spacing:-2px;user-select:none;
+}
+.card .num.long{font-size:54px;top:2px;right:6px}
+.card .kicker{
+  font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:600;
+  color:var(--green);letter-spacing:1px;position:relative;z-index:1;
+}
+.card .vtag{
+  display:inline-block;margin-left:7px;padding:1px 7px;border-radius:999px;
+  font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:600;letter-spacing:.3px;
+  background:var(--green-tint);color:var(--green-ink);vertical-align:middle;position:relative;z-index:1;
+}
+.card.is-ref .vtag{background:var(--amber-tint);color:var(--amber)}
+.bar .titles .k .vtag{
+  display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;
+  font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:600;letter-spacing:.3px;
+  background:var(--green-tint);color:var(--green-ink);vertical-align:middle;
+}
+.card h3{margin:0;font-size:15.5px;color:var(--ink);font-weight:600;line-height:1.3;
+  position:relative;z-index:1;max-width:88%}
+.card .desc{margin:0;font-size:13px;color:var(--muted);position:relative;z-index:1;flex:1}
+.card .who{
+  position:relative;z-index:1;font-size:11.5px;font-weight:500;color:var(--body);
+  display:inline-flex;align-items:center;gap:6px;margin-top:2px;
+}
+.card .who::before{content:"";width:7px;height:7px;border-radius:2px;background:var(--green-bright)}
+.card.is-ref .who::before{background:var(--amber)}
+
+/* ---------- Editor ---------- */
+.editor{display:none}
+.editor.on{display:block}
+.bar{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px;
+}
+.back{
+  display:inline-flex;align-items:center;gap:7px;background:var(--surface);
+  border:1px solid var(--line-strong);border-radius:var(--radius-sm);
+  padding:8px 13px;font-size:13.5px;font-weight:500;color:var(--body);
+}
+.back:hover{border-color:var(--green-bright);color:var(--green-ink)}
+.bar .titles{display:flex;flex-direction:column;gap:1px;line-height:1.2}
+.bar .titles .k{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--green);font-weight:600;letter-spacing:1px}
+.bar .titles .t{font-family:"Chakra Petch",sans-serif;font-size:18px;font-weight:600;color:var(--ink)}
+
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start}
+
+.panel{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);box-shadow:var(--shadow);
+}
+.form-head{padding:16px 20px 0}
+.form-head .note{
+  font-size:12.5px;color:var(--muted);background:var(--surface-2);
+  border:1px solid var(--line);border-radius:var(--radius-sm);
+  padding:9px 12px;margin-bottom:4px;
+}
+.form-body{padding:6px 20px 20px}
+.section-label{
+  font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:600;
+  letter-spacing:1px;color:var(--muted);text-transform:uppercase;
+  margin:18px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line);
+}
+.section-label:first-child{margin-top:8px}
+.field{margin-bottom:13px}
+.field.half{display:inline-block;width:calc(50% - 5px)}
+.field.half + .field.half{margin-left:8px}
+.field label{
+  display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:5px;
+}
+.field .hint{font-weight:400;color:var(--muted);font-size:11.5px}
+.field input[type=text],.field input[type=date],.field input[type=time],
+.field input[type=number],.field textarea,.field select{
+  width:100%;font-family:inherit;font-size:14px;color:var(--ink);
+  background:var(--surface);border:1px solid var(--line-strong);
+  border-radius:var(--radius-sm);padding:9px 11px;transition:.12s;
+}
+.field textarea{resize:vertical;min-height:64px;line-height:1.45}
+.field input:focus,.field textarea:focus,.field select:focus{
+  outline:none;border-color:var(--green-bright);box-shadow:0 0 0 3px rgba(47,168,102,.16)
+}
+.radios{display:flex;flex-direction:column;gap:7px}
+.radios.inline{flex-direction:row;gap:16px;flex-wrap:wrap}
+.radio{
+  display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:var(--body);
+  cursor:pointer;padding:2px 0;
+}
+.radio input{margin-top:3px;accent-color:var(--green)}
+.grade-row{display:flex;align-items:center;gap:12px;margin-bottom:9px}
+.grade-row .gl{flex:1;font-size:13px;color:var(--body)}
+.grade-row .gl b{color:var(--ink);font-weight:600}
+.grade-row .gw{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--muted);
+  background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:2px 6px;white-space:nowrap}
+.grade-row input{width:78px;text-align:center}
+.nota-box{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--green-tint);border:1px solid #cfe7da;border-radius:var(--radius-sm);
+  padding:12px 16px;margin:14px 0 4px;
+}
+.nota-box .lab{font-size:13px;color:var(--green-ink);font-weight:600}
+.nota-box .val{font-family:"Chakra Petch",sans-serif;font-size:26px;font-weight:700;color:var(--green-ink)}
+
+/* preview panel */
+.preview{position:sticky;top:84px}
+.preview-head{
+  display:flex;align-items:center;gap:10px;padding:13px 18px;border-bottom:1px solid var(--line);
+}
+.preview-head .pl{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:600;
+  letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+.actions{margin-left:auto;display:flex;gap:8px}
+.btn{
+  font-size:13px;font-weight:600;border-radius:var(--radius-sm);padding:8px 14px;
+  border:1px solid transparent;transition:.12s;display:inline-flex;align-items:center;gap:7px;
+}
+.btn.primary{background:var(--green);color:#fff}
+.btn.primary:hover{background:var(--green-bright)}
+.btn.ghost{background:var(--surface);border-color:var(--line-strong);color:var(--body)}
+.btn.ghost:hover{border-color:var(--green-bright);color:var(--green-ink)}
+.btn.sign{background:var(--green-tint);border-color:#cfe7da;color:var(--green-ink);text-decoration:none}
+.btn.sign:hover{background:#dcefe3;border-color:var(--green-bright)}
+.btn.sign svg{width:13px;height:13px;opacity:.85}
+.sign-row{padding:16px 20px 20px;border-top:1px solid var(--line)}
+.sign-label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:10px}
+.sign-label b{color:var(--ink);font-weight:600}
+.sign-btns{display:flex;gap:10px;flex-wrap:wrap}
+.frame-wrap{padding:14px;background:#eef0f3;border-radius:0 0 var(--radius) var(--radius)}
+iframe.pdf{width:100%;height:760px;border:0;border-radius:8px;background:#fff;
+  box-shadow:0 1px 2px rgba(0,0,0,.08),0 6px 20px rgba(0,0,0,.1)}
+.frame-msg{font-size:13px;color:var(--muted);text-align:center;padding:40px 20px}
+.mobile-actions{display:none}
+
+footer{max-width:1180px;margin:0 auto;padding:8px 22px 40px;color:var(--muted);font-size:12px}
+footer code{font-family:"JetBrains Mono",monospace;font-size:11.5px}
+
+@media (max-width:900px){
+  .split{grid-template-columns:1fr}
+  .preview{display:none}
+  .mobile-actions{display:flex;gap:10px;margin-top:16px}
+  .mobile-actions .btn{flex:1;justify-content:center;padding:12px}
+}
+@media (max-width:480px){
+  .field.half{width:100%;display:block}
+  .field.half + .field.half{margin-left:0}
+  .lead h1{font-size:23px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+:focus-visible{outline:2px solid var(--green-bright);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="mark"><span class="pfc">PFC</span><span class="dot"></span><span>Anexos</span></div>
+    <div class="sub"><strong>Engenharia de Telecomunicações</strong> · IFSC Câmpus São José</div>
+    <a class="badge-inst" href="https://wiki.sj.ifsc.edu.br/images/a/a3/Regulamento_PFC_-_EngTelecom_1290_-_APROVADO_assinado.pdf" target="_blank" rel="noopener noreferrer">Regulamento de PFC · 2026</a>
+  </div>
+</header>
+
+<div class="subbar">
+  <div class="subbar-in">
+    <p class="byline">Author <a href="https://rmayormartins.github.io" target="_blank" rel="noopener noreferrer"><strong>Ramon Mayor Martins, Ph.D.</strong></a><span class="sep">·</span><a class="gh" href="https://github.com/rmayormartins" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>@rmayormartins</a><span class="sep">·</span><a href="https://www.ifsc.edu.br/web/campus-sao-jose" target="_blank" rel="noopener noreferrer">IFSC SJ</a><span class="dash">-</span><a href="https://wiki.sj.ifsc.edu.br/index.php/P%C3%A1gina_principal" target="_blank" rel="noopener noreferrer">Área de Telecomunicações</a></p>
+    <span class="version">versão 2026-2</span>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- CATALOG -->
+  <section id="catalog">
+    <div class="lead">
+      <h1>Gerador de anexos do Projeto Final de Curso</h1>
+      <p>Escolha o anexo, preencha os campos e baixe o PDF pronto. Dados como nome, matrícula, título e orientador(a) são reaproveitados entre os anexos na mesma sessão.</p>
+      <p class="reglink"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 1.6H4.2c-.6 0-1 .4-1 1v10.8c0 .6.4 1 1 1h7.6c.6 0 1-.4 1-1V5.5L9 1.6Z"/><path d="M9 1.6V5.5h3.8"/><path d="M5.6 8.6h4.8M5.6 11h4.8"/></svg><a href="https://wiki.sj.ifsc.edu.br/images/a/a3/Regulamento_PFC_-_EngTelecom_1290_-_APROVADO_assinado.pdf" target="_blank" rel="noopener noreferrer">Regulamento PFC Eng Telecom 1290</a></p>
+    </div>
+    <div class="filters" id="filters">
+      <button class="chip" data-f="todos" aria-pressed="true">Todos</button>
+      <button class="chip" data-f="estudante" aria-pressed="false">Estudante</button>
+      <button class="chip" data-f="orientador" aria-pressed="false">Orientador(a)</button>
+      <button class="chip" data-f="banca" aria-pressed="false">Banca</button>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- EDITOR -->
+  <section class="editor" id="editor">
+    <div class="bar">
+      <button class="back" id="back">&larr; Índice</button>
+      <div class="titles"><span class="k" id="eK"></span><span class="t" id="eT"></span></div>
+    </div>
+    <div class="split">
+      <div class="panel">
+        <div class="form-head"><div class="note" id="eNote"></div></div>
+        <div class="form-body" id="formBody"></div>
+        <div class="form-body" style="padding-top:0">
+          <div class="mobile-actions">
+            <button class="btn ghost" id="mOpen">Abrir PDF</button>
+            <button class="btn primary" id="mDownload">Baixar PDF</button>
+          </div>
+        </div>
+        <div class="sign-row">
+          <span class="sign-label">Baixe o PDF e <b>assine</b> em:</span>
+          <div class="sign-btns">
+            <a class="btn sign" href="https://assinador.iti.br/" target="_blank" rel="noopener noreferrer">gov.br<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5H4.5A1.5 1.5 0 0 0 3 5v6.5A1.5 1.5 0 0 0 4.5 13H11a1.5 1.5 0 0 0 1.5-1.5V10"/><path d="M9.5 3.5H13V7"/><path d="M13 3.5 7.5 9"/></svg></a>
+            <a class="btn sign" href="https://sistemas.ufsc.br/login?service=https%3A%2F%2Fassina.ufsc.br%2Flogin" target="_blank" rel="noopener noreferrer">Assina UFSC<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5H4.5A1.5 1.5 0 0 0 3 5v6.5A1.5 1.5 0 0 0 4.5 13H11a1.5 1.5 0 0 0 1.5-1.5V10"/><path d="M9.5 3.5H13V7"/><path d="M13 3.5 7.5 9"/></svg></a>
+          </div>
+        </div>
+      </div>
+      <div class="panel preview">
+        <div class="preview-head">
+          <span class="pl">Prévia do documento</span>
+          <div class="actions">
+            <button class="btn ghost" id="open">Abrir</button>
+            <button class="btn primary" id="download">Baixar PDF</button>
+          </div>
+        </div>
+        <div class="frame-wrap">
+          <iframe class="pdf" id="frame" title="Prévia do PDF"></iframe>
+          <div class="frame-msg" id="frameMsg" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+<footer>
+  Ferramenta auxiliar não oficial. Gera os anexos do <code>Regulamento de PFC · Engenharia de Telecomunicações · IFSC Câmpus São José</code>. Confira sempre o documento gerado antes de assinar e protocolar.
+</footer>
+
+<script>
+"use strict";
+
+/* ============ helpers ============ */
+var MESES=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+function fld(v,n){ v=(v==null?"":String(v)).trim(); return v!==""?v:rep("_",n||30); }
+function rep(c,n){ var s=""; for(var i=0;i<n;i++)s+=c; return s; }
+function dlong(cidade,iso){
+  cidade=(cidade==null?"":String(cidade)).trim();
+  var c=cidade!==""?cidade:rep("_",16);
+  if(!iso) return c+", ____ de ____________ de ______.";
+  var p=iso.split("-"); return c+", "+(+p[2])+" de "+MESES[(+p[1])-1]+" de "+p[0]+".";
+}
+function dparts(iso){
+  if(!iso) return {d:"____",mes:"________",y:"______",y2:"____"};
+  var p=iso.split("-"); return {d:String(+p[2]).padStart(2,"0"),mes:MESES[(+p[1])-1],y:p[0],y2:p[0].slice(2)};
+}
+function dslash(iso){ if(!iso) return "____/____/______"; var p=iso.split("-"); return p[2]+"/"+p[1]+"/"+p[0]; }
+function hm(t){ if(!t) return {h:"____",m:"____"}; var p=t.split(":"); return {h:p[0],m:p[1]}; }
+function today(){ var d=new Date(),m=String(d.getMonth()+1).padStart(2,"0"),da=String(d.getDate()).padStart(2,"0"); return d.getFullYear()+"-"+m+"-"+da; }
+function slug(s){ return (s||"PFC").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9]+/g,"_").replace(/^_+|_+$/g,"").slice(0,40)||"PFC"; }
+
+/* ============ PDF building blocks ============ */
+function instHeader(){
+  return [
+    {text:"INSTITUTO FEDERAL DE SANTA CATARINA",style:"inst"},
+    {text:"Câmpus São José",style:"inst2"},
+    {text:"Curso Superior de Bacharelado em Engenharia de Telecomunicações",style:"inst2",margin:[0,0,0,18]}
+  ];
+}
+function annexTitle(num,title){
+  return [
+    {text:"ANEXO "+num,style:"anum"},
+    {text:title.toUpperCase(),style:"atitle",margin:[0,3,0,16]}
+  ];
+}
+function P(content,extra){ var o={style:"body",margin:[0,0,0,11]}; if(extra)for(var k in extra)o[k]=extra[k]; o.text=(Array.isArray(content)&&content.every(function(x){return typeof x==="string";}))?content.join(""):content; return o; }
+function dateLine(cidade,iso){
+  return {stack:[
+    {text:dlong(cidade,iso),style:"body",margin:[0,8,0,1]},
+    {text:"(Cidade, dia, mês e ano)",fontSize:8,italics:true,color:"#777",margin:[0,0,0,14]}
+  ]};
+}
+function sig(){
+  var lines=Array.prototype.slice.call(arguments);
+  var arr=[{text:rep("_",46),alignment:"center",margin:[0,24,0,0]}];
+  for(var i=0;i<lines.length;i++){ if(lines[i]==null)continue; arr.push({text:lines[i],alignment:"center",fontSize:10,margin:[0,i===0?3:0,0,0]}); }
+  return {stack:arr,margin:[0,0,0,8],unbreakable:true};
+}
+function check(sel){ return sel?"( X )":"(    )"; }
+function labelCell(t){ return {text:t,bold:true,fontSize:9.5,fillColor:"#f3f5f7"}; }
+
+/* ============ ANNEX DEFINITIONS ============ */
+var COMMON=["estudante","matricula","titulo","orientador","orientadorTit","coorientador","coorientadorTit","cidade","curso","campus","email","dataDefesa"];
+
+var ANEXOS=[
+/* I */
+{
+  num:"I",id:"anexo1",tags:["estudante","orientador"],
+  title:"Termo de Orientação de Projeto Final de Curso",
+  who:"Estudante e orientador(a)",
+  desc:"Compromisso formal de orientação do PFC no semestre letivo.",
+  note:"Apresentado no ato da matrícula no componente PFC129010. Arquivado na Coordenação do Curso.",
+  fields:[
+    {sec:"Partes"},
+    {k:"orientador",t:"text",label:"Nome do(a) orientador(a)",common:true},
+    {k:"estudante",t:"text",label:"Nome do(a) estudante",common:true},
+    {k:"matricula",t:"text",label:"Matrícula",common:true,half:true},
+    {k:"coorientador",t:"text",label:"Coorientador(a) (se houver)",common:true,half:true},
+    {sec:"Local e data"},
+    {k:"cidade",t:"text",label:"Cidade",common:true,def:"São José",half:true},
+    {k:"data",t:"date",label:"Data",def:"today",half:true}
+  ],
+  build:function(v){
+    var c=instHeader().concat(annexTitle("I",this.title));
+    c.push(P(["Eu, ",fld(v.orientador,46),", firmo, por meio deste termo, o compromisso de orientar, no presente semestre letivo, o Projeto Final de Curso (PFC) do(a) estudante ",fld(v.estudante,42),", matrícula n.º ",fld(v.matricula,14),", regularmente matriculado(a) no Curso Superior de Bacharelado em Engenharia de Telecomunicações do IFSC – Câmpus São José."]));
+    c.push(P("Declaro, ainda, estar ciente e de acordo com as disposições estabelecidas no Regulamento de Trabalho de Conclusão dos Cursos (TCC) de Graduação do IFSC, neste Regulamento e nas demais normas complementares aplicáveis."));
+    c.push(dateLine(v.cidade,v.data));
+    c.push(sig("Docente orientador(a)"));
+    c.push(sig("Coorientador(a), se houver",(v.coorientador||"").trim()||null));
+    return c;
+  }
+},
+/* II */
+{
+  num:"II",id:"anexo2",tags:["estudante"],
+  title:"Termo de Responsabilidade de Autoria",
+  who:"Estudante",
+  desc:"Declaração de autoria do trabalho, apensada ao arquivo digital do PFC.",
+  note:"Entregue assinado, apensado ao arquivo digital do PFC.",
+  fields:[
+    {sec:"Identificação"},
+    {k:"estudante",t:"text",label:"Nome do(a) estudante",common:true},
+    {k:"matricula",t:"text",label:"Matrícula",common:true,half:true},
+    {k:"titulo",t:"textarea",label:"Título do PFC",common:true},
+    {sec:"Local e data"},
+    {k:"cidade",t:"text",label:"Cidade",common:true,def:"São José",half:true},
+    {k:"data",t:"date",label:"Data",def:"today",half:true}
+  ],
+  build:function(v){
+    var c=instHeader().concat(annexTitle("II",this.title));
+    c.push(P(["Eu, ",fld(v.estudante,42),", estudante regularmente matriculado(a) no Curso Superior de Bacharelado em Engenharia de Telecomunicações do IFSC – Câmpus São José, matrícula n.º ",fld(v.matricula,14),", declaro ter conhecimento da Lei nº 9.610, de 19 de fevereiro de 1998, que altera, atualiza e consolida a legislação sobre direitos autorais, publicada no Diário Oficial da União de 20 de fevereiro de 1998."]));
+    c.push(P(["Declaro, ainda, ser de minha autoria o texto apresentado no Projeto Final de Curso (PFC) sob o título: “",fld(v.titulo,80),"”."]));
+    c.push(P("Declaro, por fim, estar ciente de que a utilização indevida ou ilegal de textos, ideias, dados ou quaisquer produções de autoria de terceiros, com ou sem autorização ou pagamento, em desrespeito aos direitos autorais, caracteriza crime de plágio e poderá acarretar a anulação do trabalho apresentado, a reprovação no componente curricular correspondente e a aplicação das sanções disciplinares previstas nas normas institucionais do IFSC, sem prejuízo das responsabilidades civis e penais cabíveis."));
+    c.push(dateLine(v.cidade,v.data));
+    c.push(sig("Assinatura do(a) estudante"));
+    return c;
+  }
+},
+/* III */
+{
+  num:"III",id:"anexo3",tags:["estudante"],
+  title:"Requerimento de Substituição de Docente Orientador(a)",
+  who:"Estudante",
+  desc:"Solicitação de troca de orientador(a), com concordância das partes.",
+  note:"Até 60 dias antes do término do prazo de entrega do PFC. Entregue ao(à) articulador(a) de PFC.",
+  fields:[
+    {sec:"Requerente"},
+    {k:"estudante",t:"text",label:"Nome do(a) estudante",common:true},
+    {k:"matricula",t:"text",label:"Matrícula",common:true,half:true},
+    {sec:"Substituição"},
+    {k:"orientador",t:"text",label:"Orientador(a) atual (substituído(a))",common:true},
+    {k:"orientadorNovo",t:"text",label:"Novo(a) orientador(a)"},
+    {k:"dataSub",t:"date",label:"A partir do dia",half:true},
+    {k:"dataAprov",t:"date",label:"Data da aprovação do requerimento (se já houver)",half:true}
+  ],
+  build:function(v){
+    var c=instHeader().concat(annexTitle("III",this.title));
+    c.push(P(["Eu, ",fld(v.estudante,46),", estudante regularmente matriculado(a) no Curso Superior de Bacharelado em Engenharia de Telecomunicações do IFSC – Câmpus São José, matrícula n.º ",fld(v.matricula,14),", venho requerer ao(à) articulador(a) de PFC a substituição do(a) meu(minha) orientador(a), o(a) docente ",fld(v.orientador,38),", pelo(a) docente ",fld(v.orientadorNovo,42),", a partir do dia ",dslash(v.dataSub),", em conformidade com os termos de concordância abaixo assinados."]));
+    c.push(sig("Assinatura do(a) estudante"));
+    c.push(sig("Docente orientador(a) substituído(a)",(v.orientador||"").trim()||null));
+    c.push(sig("Novo(a) docente orientador(a)",(v.orientadorNovo||"").trim()||null));
+    c.push(P(["Data da aprovação do requerimento: ",dslash(v.dataAprov)],{margin:[0,18,0,0]}));
+    c.push(sig("Articulador(a) de PFC"));
+    return c;
+  }
+},
+/* IV - MPQ (defesa de proposta / equivalente a TCC 1) */
+{
+  num:"IV",id:"anexo4mpq",tags:["orientador","banca"],variant:"Proposta · MPQ",
+  title:"Ata de Sessão de Defesa de Proposta de PFC",
+  who:"Orientador(a) / presidente da banca",
+  desc:"Defesa da proposta de PFC na unidade curricular Metodologia de Pesquisa (MPQ129009). Equivale à ata de TCC 1.",
+  note:"Sessão privada de avaliação da proposta. Lavrada pelo(a) presidente da banca e encaminhada ao(à) articulador(a) de PFC.",
+  fields:[
+    {sec:"Sessão"},
+    {k:"dataDefesa",t:"date",label:"Data da sessão",common:true,half:true},
+    {k:"horaInicio",t:"time",label:"Horário de abertura",half:true},
+    {sec:"Proposta"},
+    {k:"estudante",t:"text",label:"Nome do(a) estudante",common:true},
+    {k:"matricula",t:"text",label:"Matrícula",common:true,half:true},
+    {k:"orientador",t:"text",label:"Orientador(a) / presidente",common:true,half:true},
+    {k:"titulo",t:"textarea",label:"Título da proposta",common:true},
+    {k:"tempoApres",t:"text",label:"Tempo de apresentação (min)",half:true},
+    {k:"conceito",t:"text",label:"Conceito obtido",half:true},
+    {k:"resultado",t:"radio",label:"Resultado",opts:["APROVADO","APROVADO COM RESSALVAS","REPROVADO"]},
+    {k:"horaFim",t:"time",label:"Horário de encerramento",half:true},
+    {k:"observacoes",t:"textarea",label:"Observações"},
+    {sec:"Banca examinadora"},
+    {k:"orientadorTit",t:"text",label:"Titulação do(a) orientador(a)",common:true,half:true},
+    {k:"av1",t:"text",label:"Avaliador(a) — nome",half:true},
+    {k:"av1Tit",t:"text",label:"Avaliador(a) — titulação",half:true},
+    {k:"av1Inst",t:"text",label:"Avaliador(a) — instituição",half:true}
+  ],
+  build:function(v){
+    var dp=dparts(v.dataDefesa),t1=hm(v.horaInicio),t2=hm(v.horaFim);
+    var c=instHeader().concat(annexTitle("IV",this.title));
+    c.push(P(["Aos ",dp.d," dias do mês de ",dp.mes," de ",dp.y,", às ",t1.h," horas e ",t1.m," minutos, no IFSC – Câmpus São José, reuniu-se banca examinadora para, em sessão privada, proceder à avaliação da proposta de Projeto Final de Curso do(a) estudante ",fld(v.estudante,38),", matrícula n.º ",fld(v.matricula,14),", apresentado como requisito parcial para aprovação na unidade curricular Metodologia de Pesquisa (MPQ129009)."]));
+    c.push(P(["A sessão foi aberta pelo(a) docente ",fld(v.orientador,38),", orientador(a) e presidente da banca examinadora, que apresentou formalmente os membros da banca. Em seguida, a palavra foi concedida ao(à) estudante, que expôs a proposta de Projeto Final de Curso intitulado “",fld(v.titulo,52),"”, no tempo de ",fld(v.tempoApres,5)," minutos."]));
+    c.push(P("Encerrada a apresentação, cada membro da banca examinadora dirigiu suas arguições ao(à) autor(a). Concluída a fase de arguição, iniciou-se a avaliação da defesa da proposta de PFC."));
+    c.push(P(["Após a avaliação, o(a) estudante obteve o conceito ",fld(v.conceito,8),", e a banca examinadora considerou o trabalho:"]));
+    var r=v.resultado||"";
+    c.push({style:"body",margin:[14,2,0,11],stack:[
+      {text:check(r==="APROVADO")+" APROVADO;"},
+      {text:check(r==="APROVADO COM RESSALVAS")+" APROVADO COM RESSALVAS (descritas em observações);"},
+      {text:check(r==="REPROVADO")+" REPROVADO."}
+    ]});
+    c.push(P("A conclusão do processo dar-se-á mediante a entrega da versão definitiva da proposta de PFC, atestada pelo(a) docente orientador(a) ao(à) articulador(a) de PFC."));
+    c.push(P(["Cumpridas as formalidades, às ",t2.h," horas e ",t2.m," minutos, eu, presidente da banca examinadora, encerrei a sessão e lavrei a presente ata, que, após lida e aprovada, será assinada pelos membros da banca examinadora e pelo(a) estudante avaliado(a)."]));
+    c.push({text:"Observações:",bold:true,fontSize:11,margin:[0,2,0,4]});
+    c.push({text:(v.observacoes||"").trim()||rep("_",92)+"\n"+rep("_",92),style:"body",margin:[0,0,0,14]});
+    c.push({text:"BANCA EXAMINADORA",bold:true,alignment:"center",fontSize:11,margin:[0,6,0,0]});
+    c.push(sig((v.orientador||"").trim()?v.orientador+", "+(v.orientadorTit||"titulação"):"Nome do(a) orientador(a), titulação","IFSC – Câmpus São José"));
+    c.push(sig((v.av1||"").trim()?v.av1+", "+(v.av1Tit||"titulação"):"Nome do(a) avaliador(a), titulação",(v.av1Inst||"").trim()||"Instituição"));
+    c.push(sig((v.estudante||"").trim()||"Nome do(a) estudante"));
+    return c;
+  }
+},
+/* IV */
+{
+  num:"IV",id:"anexo4",tags:["orientador","banca"],variant:"Defesa final",
+  title:"Ata de Sessão de Defesa de PFC",
+  who:"Orientador(a) / presidente da banca",
+  desc:"Registro da sessão pública de defesa, com conceito e resultado.",
+  note:"Lavrada pelo(a) presidente da banca. Encaminhada ao(à) articulador(a) de PFC.",
+  fields:[
+    {sec:"Sessão"},
+    {k:"dataDefesa",t:"date",label:"Data da sessão",common:true,half:true},
+    {k:"horaInicio",t:"time",label:"Horário de abertura",half:true},
+    {sec:"Trabalho"},
+    {k:"estudante",t:"text",label:"Nome do(a) estudante",common:true},
+    {k:"matricula",t:"text",label:"Matrícula",common:true,half:true},
+    {k:"orientador",t:"text",label:"Orientador(a) / presidente",common:true,half:true},
+    {k:"titulo",t:"textarea",label:"Título do trabalho",common:true},
+    {k:"tempoApres",t:"text",label:"Tempo de apresentação (min)",half:true},
+    {k:"conceito",t:"text",label:"Conceito obtido",half:true},
+    {k:"resultado",t:"radio",label:"Resultado",opts:["APROVADO","APROVADO COM RESSALVAS","REPROVADO"]},
+    {k:"horaFim",t:"time",label:"Horário de encerramento",half:true},
+    {k:"observacoes",t:"textarea",label:"Observações"},
+    {sec:"Banca examinadora"},
+    {k:"orientadorTit",t:"text",label:"Titulação do(a) orientador(a)",common:true,half:true},
+    {k:"av1",t:"text",label:"Avaliador(a) 1 — nome",half:true},
+    {k:"av1Tit",t:"text",label:"Avaliador(a) 1 — titulação",half:true},
+    {k:"av1Inst",t:"text",label:"Avaliador(a) 1 — instituição",half:true},
+    {k:"av2",t:"text",label:"Avaliador(a) 2 — nome",half:true},
+    {k:"av2Tit",t:"text",label:"Avaliador(a) 2 — titulação",half:true},
+    {k:"av2Inst",t:"text",label:"Avaliador(a) 2 — instituição"}
+  ],
+  build:function(v){
+    var dp=dparts(v.dataDefesa),t1=hm(v.horaInicio),t2=hm(v.horaFim);
+    var c=instHeader().concat(annexTitle("IV",this.title));
+    c.push(P(["Aos ",dp.d," dias do mês de ",dp.mes," de ",dp.y,", às ",t1.h," horas e ",t1.m," minutos, no IFSC – Câmpus São José, reuniu-se banca examinadora para, em sessão pública, proceder à avaliação do Projeto Final de Curso do(a) estudante ",fld(v.estudante,38),", matrícula n.º ",fld(v.matricula,14),", apresentado como requisito parcial para a conclusão do Curso Superior de Bacharelado em Engenharia de Telecomunicações, de acordo com a Resolução CEPE/IFSC nº 29, de 13 de março de 2025, que aprova o Regulamento de Trabalho de Conclusão de Curso de Graduação do Instituto Federal de Santa Catarina."]));
+    c.push(P(["A sessão foi aberta pelo(a) docente ",fld(v.orientador,38),", orientador(a) e presidente da banca examinadora, que apresentou formalmente os membros da banca. Em seguida, a palavra foi concedida ao(à) estudante, que expôs o Projeto Final de Curso intitulado “",fld(v.titulo,55),"”, no tempo de ",fld(v.tempoApres,5)," minutos."]));
+    c.push(P("Encerrada a apresentação, cada membro da banca examinadora dirigiu suas arguições ao(à) autor(a). Concluída a fase de arguição, iniciou-se a avaliação da defesa do PFC."));
+    c.push(P(["Após a avaliação, o(a) estudante obteve o conceito ",fld(v.conceito,8),", e a banca examinadora considerou o trabalho:"]));
+    var r=v.resultado||"";
+    c.push({style:"body",margin:[14,2,0,11],stack:[
+      {text:check(r==="APROVADO")+" APROVADO;"},
+      {text:check(r==="APROVADO COM RESSALVAS")+" APROVADO COM RESSALVAS (descritas em observações);"},
+      {text:check(r==="REPROVADO")+" REPROVADO."}
+    ]});
+    c.push(P("A conclusão do processo dar-se-á mediante a entrega da versão definitiva do PFC, atestada pelo(a) docente orientador(a) ao(à) articulador(a) de PFC."));
+    c.push(P(["Cumpridas as formalidades, às ",t2.h," horas e ",t2.m," minutos, eu, presidente da banca examinadora, encerrei a sessão e lavrei a presente ata, que, após lida e aprovada, será assinada pelos membros da banca examinadora e pelo(a) estudante avaliado(a)."]));
+    c.push({text:"Observações:",bold:true,fontSize:11,margin:[0,2,0,4]});
+    c.push({text:(v.observacoes||"").trim()||rep("_",92)+"\n"+rep("_",92),style:"body",margin:[0,0,0,14]});
+    c.push({text:"BANCA EXAMINADORA",bold:true,alignment:"center",fontSize:11,margin:[0,6,0,0]});
+    c.push(sig((v.orientador||"").trim()?v.orientador+", "+(v.orientadorTit||"titulação"):"Nome do(a) orientador(a), titulação","IFSC – Câmpus São José"));
+    c.push(sig((v.av1||"").trim()?v.av1+", "+(v.av1Tit||"titulação"):"Nome do(a) avaliador(a), titulação",(v.av1Inst||"").trim()||"Instituição"));
+    c.push(sig((v.av2||"").trim()?v.av2+", "+(v.av2Tit||"titulação"):"Nome do(a) avaliador(a), titulação",(v.av2Inst||"").trim()||"Instituição"));
+    return c;
+  }
+},
+/* V */
+{
+  num:"V",id:"anexo5",tags:["estudante","orientador"],
+  title:"Ciência da data de entrega da versão definitiva",
+  who:"Estudante e orientador(a)",
+  desc:"Ciência do prazo final para entrega do PFC revisado após a banca.",
+  note:"Arquivado na Coordenação do Curso.",
+  fields:[
+    {sec:"Identificação"},
+    {k:"estudante",t:"text",label:"Nome do(a) estudante",common:true},
+    {k:"matricula",t:"text",label:"Matrícula",common:true,half:true},
+    {k:"dataEntrega",t:"date",label:"Entregar até o dia",half:true},
+    {sec:"Local e data"},
+    {k:"cidade",t:"text",label:"Cidade",common:true,def:"São José",half:true},
+    {k:"data",t:"date",label:"Data",def:"today",half:true}
+  ],
+  build:function(v){
+    var c=instHeader().concat(annexTitle("V","Ciência do(a) Estudante referente à data de entrega da versão definitiva do PFC"));
+    c.push(P(["Eu, ",fld(v.estudante,46),", estudante regularmente matriculado(a) no Curso Superior de Bacharelado em Engenharia de Telecomunicações do IFSC – Câmpus São José, matrícula n.º ",fld(v.matricula,14),", declaro estar ciente que deverei entregar o meu PFC revisado, de acordo com as alterações sugeridas pela banca examinadora, ao(à) articulador(a) de PFC, com anuência por escrito do(a) docente orientador(a), até o dia ",dslash(v.dataEntrega),", sob pena de estar automaticamente reprovado(a) no componente curricular de Projeto Final de Curso (PFC129010)."]));
+    c.push(dateLine(v.cidade,v.data));
+    c.push(sig("Assinatura do(a) estudante"));
+    c.push(sig("Assinatura do(a) orientador(a)"));
+    return c;
+  }
+},
+/* VI */
+{
+  num:"VI",id:"anexo6",tags:["estudante"],
+  title:"Autorização para Publicação no Repositório Institucional",
+  who:"Estudante",
+  desc:"Autoriza (ou não) a publicação do PFC no RI do IFSC.",
+  note:"Referente ao Art. 16 da Resolução CEPE/IFSC n.º 47/2022. Encaminhado à biblioteca.",
+  fields:[
+    {sec:"Tipo da obra"},
+    {k:"tipoObra",t:"radio",label:"",def:"Trabalho de conclusão de curso de graduação",
+     opts:["Trabalho de conclusão de curso técnico","Trabalho de conclusão de curso de graduação","Trabalho de conclusão de curso de especialização","Dissertação","Tese","Produto técnico e tecnológico","Produto educacional"]},
+    {sec:"Identificação do(a) autor(a)"},
+    {k:"estudante",t:"text",label:"Nome",common:true},
+    {k:"rg",t:"text",label:"RG",half:true},
+    {k:"cpf",t:"text",label:"CPF",half:true},
+    {k:"email",t:"text",label:"E-mail",common:true},
+    {k:"matricula",t:"text",label:"Matrícula/SIAPE",common:true,half:true},
+    {k:"telefone",t:"text",label:"Telefone",half:true},
+    {k:"campus",t:"text",label:"Câmpus",common:true,def:"São José",half:true},
+    {k:"curso",t:"text",label:"Curso",common:true,def:"Bacharelado em Engenharia de Telecomunicações",half:true},
+    {sec:"Identificação da obra"},
+    {k:"titulo",t:"textarea",label:"Título",common:true},
+    {k:"dataDefesa",t:"date",label:"Data da defesa",common:true,half:true},
+    {k:"orientador",t:"text",label:"Orientador(a)",common:true,half:true},
+    {k:"coorientador",t:"text",label:"Coorientador(a) (se houver)",common:true},
+    {sec:"Autorização"},
+    {k:"autoriza",t:"radio",label:"",def:"AGORA",
+     opts:[
+       {v:"AGORA",label:"AUTORIZO a disponibilização total e gratuita no RI, em formato digital, a partir desta data."},
+       {v:"DATA",label:"AUTORIZO a disponibilização a partir de uma data específica."},
+       {v:"NAO",label:"NÃO AUTORIZO a disponibilização (com justificativa obrigatória)."}
+     ]},
+    {k:"dataLib",t:"date",label:"Disponibilizar a partir de",showIf:function(v){return v.autoriza==="DATA";},half:true},
+    {k:"patente",t:"radio",label:"Ocasionará registro de patente?",opts:["sim","não"],inline:true,showIf:function(v){return v.autoriza==="DATA";}},
+    {k:"justificativa",t:"textarea",label:"Justificativa (obrigatória)",showIf:function(v){return v.autoriza==="NAO";}},
+    {sec:"Local e data"},
+    {k:"cidade",t:"text",label:"Cidade",common:true,def:"São José",half:true},
+    {k:"data",t:"date",label:"Data",def:"today",half:true}
+  ],
+  build:function(v){
+    var c=instHeader().concat(annexTitle("VI","Termo de Autorização para Publicação no Repositório Institucional do IFSC"));
+    c.push({text:"(referente ao caput do Art. 16 da Resolução CEPE/IFSC n.º 47 de 23 de junho de 2022)",fontSize:9,italics:true,alignment:"center",color:"#555",margin:[0,0,0,12]});
+    var tipos=["Trabalho de conclusão de curso técnico","Trabalho de conclusão de curso de graduação","Trabalho de conclusão de curso de especialização","Dissertação","Tese","Produto técnico e tecnológico","Produto educacional"];
+    var tlines=tipos.map(function(tp){return {text:check(v.tipoObra===tp)+" "+tp,fontSize:9.5,margin:[0,1,0,1]};});
+    c.push({table:{widths:["*"],body:[
+      [{text:"1. Tipo da obra",bold:true,fontSize:9.5,fillColor:"#f3f5f7"}],
+      [{stack:tlines}]
+    ]},layout:"lightHorizontalLines",margin:[0,0,0,10]});
+    c.push({table:{widths:["auto","*","auto","*"],body:[
+      [{text:"2. Identificação do(a) autor(a)",colSpan:4,bold:true,fontSize:9.5,fillColor:"#f3f5f7"},{},{},{}],
+      [labelCell("Nome"),{text:fld(v.estudante,0),colSpan:3,fontSize:9.5},{},{}],
+      [labelCell("RG"),{text:fld(v.rg,0),fontSize:9.5},labelCell("CPF"),{text:fld(v.cpf,0),fontSize:9.5}],
+      [labelCell("E-mail"),{text:fld(v.email,0),colSpan:3,fontSize:9.5},{},{}],
+      [labelCell("Matrícula/SIAPE"),{text:fld(v.matricula,0),fontSize:9.5},labelCell("Telefone"),{text:fld(v.telefone,0),fontSize:9.5}],
+      [labelCell("Câmpus"),{text:fld(v.campus,0),colSpan:3,fontSize:9.5},{},{}],
+      [labelCell("Curso"),{text:fld(v.curso,0),colSpan:3,fontSize:9.5},{},{}]
+    ]},layout:"lightHorizontalLines",margin:[0,0,0,10]});
+    c.push({table:{widths:["auto","*"],body:[
+      [{text:"3. Identificação da obra",colSpan:2,bold:true,fontSize:9.5,fillColor:"#f3f5f7"},{}],
+      [labelCell("Título"),{text:fld(v.titulo,0),fontSize:9.5}],
+      [labelCell("Data da defesa"),{text:v.dataDefesa?dslash(v.dataDefesa):rep("_",20),fontSize:9.5}],
+      [labelCell("Orientador(a)"),{text:fld(v.orientador,0),fontSize:9.5}],
+      [labelCell("Coorientador(a)"),{text:fld(v.coorientador,0),fontSize:9.5}]
+    ]},layout:"lightHorizontalLines",margin:[0,0,0,12]});
+    c.push(P(["Na qualidade de titular dos direitos do autor da obra supracitada, de acordo com a Lei 9.610/98, autorizo o Instituto Federal de Santa Catarina (IFSC) a publicar em seu Repositório Institucional, conforme a permissão assinalada abaixo, para fins de preservação e divulgação da produção científica e tecnológica gerada pelo IFSC."]));
+    function box(txt){ return {table:{widths:["*"],body:[[{text:txt,fontSize:9.5,margin:[2,3,2,3]}]]},layout:"lightHorizontalLines",margin:[0,0,0,7]}; }
+    c.push(box(check(v.autoriza==="AGORA")+" AUTORIZO o IFSC, neste ato de depósito, a disponibilizar total e gratuitamente, para fins acadêmicos, em seu Repositório Institucional, sem ressarcimento dos direitos autorais, a obra de minha autoria supracitada, em formato digital, para fins de leitura e/ou impressão pela internet, a partir desta data."));
+    c.push(box(check(v.autoriza==="DATA")+" AUTORIZO o IFSC a disponibilizar a obra em seu Repositório Institucional, em formato digital, a partir de "+(v.dataLib?dslash(v.dataLib):rep("_",14))+". Ocasionará registro de patente? "+check(v.patente==="sim")+" sim  "+check(v.patente==="não")+" não"));
+    c.push(box(check(v.autoriza==="NAO")+" NÃO AUTORIZO o IFSC a disponibilizar a obra em seu Repositório Institucional. Justificativa: "+((v.justificativa||"").trim()||rep("_",70))));
+    c.push(dateLine(v.cidade,v.data));
+    c.push(sig("Assinatura do(a) autor(a)"));
+    return c;
+  }
+},
+/* VII */
+{
+  num:"VII",id:"anexo7",tags:["estudante"],
+  title:"Formulário de Metadados",
+  who:"Estudante",
+  desc:"Metadados do PFC para o Repositório Institucional.",
+  note:"Referente ao Art. 16 da Resolução CEPE/IFSC n.º 47/2022. Encaminhado à biblioteca.",
+  fields:[
+    {sec:"Vínculo"},
+    {k:"campus",t:"text",label:"Câmpus",common:true,def:"São José",half:true},
+    {k:"curso",t:"text",label:"Curso",common:true,def:"Bacharelado em Engenharia de Telecomunicações",half:true},
+    {sec:"Pessoas"},
+    {k:"estudante",t:"text",label:"Autor(a)",common:true},
+    {k:"lattesAutor",t:"text",label:"URL do Lattes do(a) autor(a)"},
+    {k:"orientador",t:"text",label:"Orientador(a)",common:true,half:true},
+    {k:"lattesOri",t:"text",label:"URL do Lattes do(a) orientador(a)",half:true},
+    {k:"coorientador",t:"text",label:"Coorientador(a) (se houver)",common:true,half:true},
+    {k:"lattesCoo",t:"text",label:"URL do Lattes do(a) coorientador(a)",half:true},
+    {k:"banca",t:"textarea",label:"Membros da banca (um por linha)"},
+    {k:"lattesBanca",t:"textarea",label:"URLs do Lattes dos membros (um por linha)"},
+    {k:"outras",t:"text",label:"Outras responsabilidades (ilustrador, intérprete de Libras etc.)"},
+    {sec:"Obra"},
+    {k:"dataDefesa",t:"date",label:"Data de defesa",common:true,half:true},
+    {k:"titulo",t:"textarea",label:"Título e subtítulo (se houver)",common:true},
+    {k:"tituloEst",t:"text",label:"Título e subtítulo em língua estrangeira (se houver)"},
+    {k:"resumo",t:"textarea",label:"Resumo"},
+    {k:"resumoEst",t:"textarea",label:"Resumo em língua estrangeira (se houver)"},
+    {k:"palavras",t:"text",label:"Palavras-chave"},
+    {k:"palavrasEst",t:"text",label:"Palavras-chave em língua estrangeira (se houver)"},
+    {sec:"Local e data"},
+    {k:"cidade",t:"text",label:"Cidade",common:true,def:"São José",half:true},
+    {k:"data",t:"date",label:"Data",def:"today",half:true}
+  ],
+  build:function(v){
+    var c=instHeader().concat(annexTitle("VII",this.title));
+    c.push({text:"(referente ao caput do Art. 16 da Resolução CEPE/IFSC n.º 47 de 23 de junho de 2022)",fontSize:9,italics:true,alignment:"center",color:"#555",margin:[0,0,0,12]});
+    function row(l,val){ return [labelCell(l),{text:fld(val,0),fontSize:9.5}]; }
+    var body=[
+      row("Câmpus",v.campus),
+      row("Curso",v.curso),
+      row("Autor",v.estudante),
+      row("URL do Lattes do autor (se houver)",v.lattesAutor),
+      row("Orientador(a)",v.orientador),
+      row("URL do Lattes do orientador(a)",v.lattesOri),
+      row("Coorientador(a) (se houver)",v.coorientador),
+      row("URL do Lattes do coorientador(a) (se houver)",v.lattesCoo),
+      row("Membros da banca",v.banca),
+      row("URL do Lattes dos membros (se houver)",v.lattesBanca),
+      row("Outras responsabilidades (se houver)",v.outras),
+      row("Data de defesa",v.dataDefesa?dslash(v.dataDefesa):""),
+      row("Título e subtítulo (se houver)",v.titulo),
+      row("Título e subtítulo em língua estrangeira (se houver)",v.tituloEst),
+      row("Resumo",v.resumo),
+      row("Resumo em língua estrangeira (se houver)",v.resumoEst),
+      row("Palavras-chave",v.palavras),
+      row("Palavras-chave em língua estrangeira (se houver)",v.palavrasEst)
+    ];
+    c.push({table:{widths:["38%","*"],body:body},layout:"lightHorizontalLines",margin:[0,0,0,12]});
+    c.push(dateLine(v.cidade,v.data));
+    c.push(sig("Assinatura do(a) autor(a)"));
+    return c;
+  }
+},
+/* VIII */
+{
+  num:"VIII",id:"anexo8",tags:["orientador"],
+  title:"Declaração de Membro de Banca de PFC",
+  who:"Orientador(a) / presidente",
+  desc:"Declaração de participação de membro na banca examinadora.",
+  note:"Expedida pelo(a) presidente da banca.",
+  fields:[
+    {sec:"Membro"},
+    {k:"membro",t:"text",label:"Nome do(a) membro da banca"},
+    {k:"numDefesa",t:"text",label:"Número da defesa (ª)",half:true},
+    {sec:"Trabalho"},
+    {k:"estudante",t:"text",label:"Nome do(a) estudante",common:true},
+    {k:"matricula",t:"text",label:"Matrícula",common:true,half:true},
+    {k:"titulo",t:"textarea",label:"Título",common:true},
+    {k:"orientador",t:"text",label:"Orientador(a) / presidente",common:true,half:true},
+    {k:"orientadorTit",t:"text",label:"Titulação do(a) orientador(a)",common:true,half:true},
+    {k:"coorientador",t:"text",label:"Coorientador(a) (se houver)",common:true},
+    {sec:"Sessão"},
+    {k:"dataDefesa",t:"date",label:"Data da sessão",common:true,half:true},
+    {k:"horaInicio",t:"time",label:"Das",half:true},
+    {k:"horaFim",t:"time",label:"Às",half:true}
+  ],
+  build:function(v){
+    var dp=dparts(v.dataDefesa),t1=hm(v.horaInicio),t2=hm(v.horaFim);
+    var ts=function(t){return t.h+":"+t.m;};
+    var c=instHeader().concat(annexTitle("VIII",this.title));
+    c.push(P(["Declaro, para os devidos fins, que o(a) Sr.(a) ",fld(v.membro,44)," integrou a banca examinadora da ",fld(v.numDefesa,4),"ª defesa pública de Projeto Final de Curso (PFC) do Curso Superior de Bacharelado em Engenharia de Telecomunicações do IFSC – Câmpus São José, referente ao trabalho apresentado pelo(a) estudante ",fld(v.estudante,38),", matrícula nº ",fld(v.matricula,14),", intitulado “",fld(v.titulo,50),"”, orientado pelo(a) Prof.(a) ",fld(v.orientador,38),", presidente da banca examinadora, e coorientado pelo(a) Prof.(a) ",fld(v.coorientador,32),", se houver. A sessão de defesa foi realizada no dia ",dp.d," de ",dp.mes," de 20",dp.y2,", das ",ts(t1)," às ",ts(t2),"."]));
+    c.push(sig((v.orientador||"").trim()?v.orientador+", "+(v.orientadorTit||"titulação"):"Nome do(a) orientador(a), titulação","IFSC – Câmpus São José"));
+    return c;
+  }
+},
+/* IX */
+{
+  num:"IX",id:"anexo9",tags:["orientador","banca"],
+  title:"Termo de Aprovação",
+  who:"Orientador(a) / banca",
+  desc:"Folha de aprovação do trabalho em sua forma final.",
+  note:"Retido com o(a) articulador(a) de PFC até a entrega das correções. Encaminhado ao Registro Acadêmico.",
+  fields:[
+    {sec:"Trabalho"},
+    {k:"estudante",t:"text",label:"Nome do(a) estudante",common:true},
+    {k:"titulo",t:"textarea",label:"Título do PFC",common:true},
+    {sec:"Local e data"},
+    {k:"cidade",t:"text",label:"Cidade",common:true,def:"São José",half:true},
+    {k:"data",t:"date",label:"Data",def:"today",half:true},
+    {sec:"Banca examinadora"},
+    {k:"orientador",t:"text",label:"Orientador(a) — nome",common:true,half:true},
+    {k:"orientadorTit",t:"text",label:"Orientador(a) — titulação",common:true,half:true},
+    {k:"av1",t:"text",label:"Avaliador(a) 1 — nome",half:true},
+    {k:"av1Tit",t:"text",label:"Avaliador(a) 1 — titulação",half:true},
+    {k:"av1Inst",t:"text",label:"Avaliador(a) 1 — instituição"},
+    {k:"av2",t:"text",label:"Avaliador(a) 2 — nome",half:true},
+    {k:"av2Tit",t:"text",label:"Avaliador(a) 2 — titulação",half:true},
+    {k:"av2Inst",t:"text",label:"Avaliador(a) 2 — instituição"}
+  ],
+  build:function(v){
+    var dp=dparts(v.data);
+    var c=instHeader().concat(annexTitle("IX",this.title));
+    c.push({text:((v.estudante||"").trim()||"NOME DO(A) ESTUDANTE").toUpperCase(),bold:true,alignment:"center",fontSize:12,margin:[0,4,0,4]});
+    c.push({text:((v.titulo||"").trim()||"TÍTULO DO PROJETO FINAL DE CURSO").toUpperCase(),bold:true,alignment:"center",fontSize:11,margin:[0,0,0,18]});
+    c.push(P("Este trabalho foi julgado adequado para a obtenção do grau de Bacharel em Engenharia de Telecomunicações pelo Instituto Federal de Educação, Ciência e Tecnologia de Santa Catarina e aprovado, em sua forma final, pela banca examinadora abaixo identificada."));
+    var cid=(v.cidade||"").trim()||rep("_",16);
+    c.push({text:cid+", "+dp.d+" de "+dp.mes+" de "+(v.data?dp.y:"20"+rep("_",4))+".",style:"body",margin:[0,8,0,16]});
+    c.push(sig((v.orientador||"").trim()?v.orientador+", "+(v.orientadorTit||"titulação"):"Nome do(a) orientador(a), titulação","IFSC – Câmpus São José"));
+    c.push(sig((v.av1||"").trim()?v.av1+", "+(v.av1Tit||"titulação"):"Nome do(a) avaliador(a), titulação",(v.av1Inst||"").trim()||"Instituição"));
+    c.push(sig((v.av2||"").trim()?v.av2+", "+(v.av2Tit||"titulação"):"Nome do(a) avaliador(a), titulação",(v.av2Inst||"").trim()||"Instituição"));
+    return c;
+  }
+},
+/* X */
+{
+  num:"X",id:"anexo10",tags:["orientador","banca"],ref:true,
+  title:"Sugestão de Rito de Defesa de PFC",
+  who:"Referência para o(a) presidente",
+  desc:"Roteiro padrão da sessão de defesa. Gere para imprimir e seguir na banca.",
+  note:"Documento de referência. Não exige preenchimento.",
+  fields:[
+    {sec:"Identificação (opcional)"},
+    {k:"estudante",t:"text",label:"Estudante (opcional)",common:true},
+    {k:"dataDefesa",t:"date",label:"Data da defesa (opcional)",common:true,half:true}
+  ],
+  build:function(v){
+    var c=instHeader().concat(annexTitle("X",this.title));
+    c.push({text:"BACHARELADO EM ENGENHARIA DE TELECOMUNICAÇÕES DO IFSC – Câmpus São José.",bold:true,fontSize:10,alignment:"center",margin:[0,0,0,4]});
+    if((v.estudante||"").trim()||v.dataDefesa){
+      c.push({text:"Estudante: "+((v.estudante||"").trim()||"—")+"   |   Data: "+(v.dataDefesa?dslash(v.dataDefesa):"—"),fontSize:9.5,alignment:"center",color:"#555",margin:[0,0,0,8]});
+    }
+    c.push({text:"PROCEDIMENTO / RITO PARA DEFESA DE PFC EM BANCA",bold:true,fontSize:11,alignment:"center",margin:[0,4,0,10]});
+    var steps=[
+      "O(a) presidente da banca, orientador(a) do PFC, inicia a sessão. Se necessário e com consentimento dos(as) presentes, solicita autorização para gravação. Havendo concordância unânime, inicia a gravação.",
+      "O(a) presidente abre a sessão, informando tratar-se de defesa de PFC do Curso de Bacharelado em Engenharia de Telecomunicações do IFSC – Câmpus São José.",
+      "O(a) presidente apresenta os membros da banca e o(a) estudante (nome completo), disponibilizando aos avaliadores a planilha de apuração de notas com os critérios de avaliação.",
+      "O(a) presidente disponibiliza a lista de presença para o primeiro registro dos(as) participantes que necessitem de declaração de participação (ou link correspondente, em webconferência).",
+      "O(a) estudante apresenta o trabalho, com duração entre 15 e 30 minutos.",
+      "Encerrada a apresentação, o(a) presidente passa a palavra ao membro externo da banca, que terá até 20 minutos para arguição.",
+      "Na sequência, o(a) presidente passa a palavra aos membros internos da banca, que terão até 20 minutos para arguição.",
+      "O(a) presidente poderá realizar observações e/ou questionamentos ao(à) estudante.",
+      "O(a) presidente abre a palavra ao público para perguntas.",
+      "O(a) presidente disponibiliza novamente a lista de presença para o segundo registro dos(as) participantes que necessitem de declaração.",
+      "O(a) presidente inicia a deliberação privada com a banca. Em webconferência, poderá ser criada sala virtual específica; em sessões presenciais, a banca reúne-se em ambiente reservado. A gravação poderá ser interrompida.",
+      "O(a) presidente reinicia a gravação, caso tenha sido interrompida.",
+      "A sessão é retomada para que o(a) presidente informe o resultado: a) aprovado(a); b) aprovado(a) mediante ajustes em até 30 dias; c) reprovado(a).",
+      "O(a) presidente encerra a sessão e agradece a presença de todos(as).",
+      "O(a) presidente encerra a gravação."
+    ];
+    c.push({ol:steps,style:"body",margin:[0,0,0,12]});
+    c.push({text:"Após a sessão, o(a) presidente deverá:",bold:true,fontSize:10.5,margin:[0,2,0,6]});
+    c.push({ul:[
+      "Em caso de aprovação, informar à banca que o Termo de Aprovação ficará retido com o(a) articulador(a) de PFC até a realização das correções eventualmente exigidas.",
+      "Preencher a Ata de Sessão de Defesa de PFC.",
+      "Colher assinatura (física ou digital) do(a) estudante autorizando a disponibilização do PFC no Repositório Institucional.",
+      "Redigir e encaminhar as declarações de participação dos membros da banca.",
+      "Redigir e encaminhar as declarações de participação das pessoas que assistiram à defesa e registraram presença.",
+      "Preencher o Termo de Aprovação (Anexo IX), quando necessário.",
+      "Colher as assinaturas necessárias nos documentos pertinentes.",
+      "Entregar ao(à) articulador(a) de PFC, em até 11 dias após a defesa, todos os documentos preenchidos e assinados (versão final do trabalho, termo de autorização, ata, planilha de notas, declarações de participação e Termo de Aprovação)."
+    ],style:"body",margin:[0,0,0,10]});
+    c.push({text:"Observação: todos os arquivos deverão estar em formato PDF e compactados em pasta identificada com o nome completo do(a) estudante.",fontSize:9.5,italics:true,color:"#555"});
+    return c;
+  }
+},
+/* XI */
+{
+  num:"XI",id:"anexo11",tags:["banca"],
+  title:"Ficha de Avaliação de PFC",
+  who:"Banca / avaliador(a)",
+  desc:"Planilha de notas por critério. A nota parcial é calculada automaticamente.",
+  note:"Itens 7 e 8 têm peso 2; os demais, peso 1. Escala de 0 a 10.",
+  fields:[
+    {sec:"Cabeçalho"},
+    {k:"estudante",t:"text",label:"Estudante",common:true},
+    {k:"dataHorario",t:"text",label:"Data/horário",half:true},
+    {k:"avaliador",t:"text",label:"Avaliador(a)",half:true},
+    {k:"papel",t:"radio",label:"Função",opts:["Orientador(a)","Membro convidado"],inline:true},
+    {sec:"Critérios (0 a 10)"},
+    {k:"c1",t:"grade",label:"Originalidade e/ou relevância do tema",peso:1},
+    {k:"c2",t:"grade",label:"Estrutura e organização do trabalho",peso:1},
+    {k:"c3",t:"grade",label:"Fundamentação teórica",peso:1},
+    {k:"c4",t:"grade",label:"Método",peso:1},
+    {k:"c5",t:"grade",label:"Resultados e conclusões",peso:1},
+    {k:"c6",t:"grade",label:"Contribuição acadêmica",peso:1},
+    {k:"c7",t:"grade",label:"Domínio do conteúdo",peso:2},
+    {k:"c8",t:"grade",label:"Capacidade de argumentação",peso:2},
+    {k:"c9",t:"grade",label:"Apresentação à banca",peso:1},
+    {nota:true},
+    {sec:"Fechamento"},
+    {k:"consideracoes",t:"textarea",label:"Considerações finais"},
+    {k:"cidade",t:"text",label:"Cidade",common:true,def:"São José",half:true},
+    {k:"data",t:"date",label:"Data",def:"today",half:true}
+  ],
+  build:function(v){
+    var ws=0,sum=0,any=false;
+    this.fields.forEach(function(f){
+      if(f.t!=="grade")return;
+      var raw=v[f.k]; if(raw===undefined||raw==="")return;
+      var g=parseFloat(raw); if(isNaN(g))return; if(g<0)g=0; if(g>10)g=10;
+      sum+=g*f.peso; ws+=f.peso; any=true;
+    });
+    var notaStr=any?(sum/ws).toFixed(1).replace(".",","):"—";
+    var c=instHeader().concat(annexTitle("XI","Ficha de Avaliação de Projeto Final de Curso da Engenharia de Telecomunicações"));
+    c.push({table:{widths:["18%","*","16%","*"],body:[
+      [labelCell("Estudante"),{text:fld(v.estudante,0),fontSize:9.5},labelCell("Data/horário"),{text:fld(v.dataHorario,0),fontSize:9.5}],
+      [labelCell("Avaliador(a)"),{text:fld(v.avaliador,0),fontSize:9.5},labelCell("Função"),{text:(v.papel||rep("_",18)),fontSize:9.5}],
+      [labelCell("Nota parcial"),{text:notaStr,colSpan:3,bold:true,fontSize:10,color:"#155a39"},{},{}]
+    ]},layout:"lightHorizontalLines",margin:[0,0,0,10]});
+    c.push({ul:[
+      "Os itens 7 e 8 têm peso 2 e os demais têm peso 1. A escala é de 0 a 10.",
+      "A nota parcial corresponde à média ponderada de todos os critérios, resultando em uma nota de 0 a 10.",
+      "A nota final será a média das avaliações de todos os membros da banca, registrada na ata da sessão de defesa."
+    ],fontSize:9,color:"#555",margin:[0,0,0,10]});
+    var crit=[
+      ["(1) Originalidade e/ou relevância do tema","Avaliar se o tema abordado no PFC é relevante e/ou inovador dentro da área de estudo.","c1"],
+      ["(2) Estrutura e organização do trabalho","Verificar a clareza na redação e uso da norma culta da língua portuguesa, estruturação do conteúdo e organização das seções do PFC.","c2"],
+      ["(3) Fundamentação teórica","Analisar a consistência e adequação das referências teóricas utilizadas para embasar o trabalho.","c3"],
+      ["(4) Método","Avaliar a adequação e consistência dos métodos utilizados para coletar e analisar os dados.","c4"],
+      ["(5) Resultados e conclusões","Verificar se os resultados obtidos são coerentes com o método adotado e se as conclusões são fundamentadas.","c5"],
+      ["(6) Contribuição acadêmica","Avaliar a contribuição do PFC para o avanço do conhecimento na área de estudo.","c6"],
+      ["(7) Domínio do conteúdo","Verificar se o(a) autor(a) demonstra conhecimento suficiente sobre o tema abordado.","c7"],
+      ["(8) Capacidade de argumentação","Avaliar a habilidade do(a) autor(a) em apresentar argumentos de forma clara e consistente.","c8"],
+      ["(9) Apresentação à banca","Oratória, adequação ao tempo e qualidade dos recursos audiovisuais.","c9"]
+    ];
+    var body=[[{text:"Critério",bold:true,fontSize:9,fillColor:"#f3f5f7"},{text:"Descrição",bold:true,fontSize:9,fillColor:"#f3f5f7"},{text:"Valor",bold:true,fontSize:9,fillColor:"#f3f5f7",alignment:"center"}]];
+    crit.forEach(function(r){
+      var val=(v[r[2]]===undefined||v[r[2]]==="")?rep("_",4):String(v[r[2]]);
+      body.push([{text:r[0],fontSize:9,bold:true},{text:r[1],fontSize:8.5},{text:val,fontSize:10,alignment:"center"}]);
+    });
+    c.push({table:{widths:["28%","*","10%"],body:body},layout:"lightHorizontalLines",margin:[0,0,0,12]});
+    c.push({text:"Considerações finais:",bold:true,fontSize:10.5,margin:[0,0,0,4]});
+    c.push({text:(v.consideracoes||"").trim()||rep("_",92)+"\n"+rep("_",92),style:"body",margin:[0,0,0,12]});
+    c.push(dateLine(v.cidade,v.data));
+    c.push(sig("Assinatura do(a) avaliador(a)"));
+    return c;
+  }
+}
+];
+
+/* ============ PDF assembly ============ */
+function docDef(annex,state){
+  return {
+    pageSize:"A4",
+    pageMargins:[64,58,64,54],
+    info:{title:"Anexo "+annex.num+" - PFC"},
+    content:annex.build(state),
+    defaultStyle:{font:"Roboto",fontSize:11,lineHeight:1.32,color:"#1c2530"},
+    styles:{
+      inst:{fontSize:11,bold:true,alignment:"center"},
+      inst2:{fontSize:9.5,alignment:"center"},
+      anum:{fontSize:12,bold:true,alignment:"center"},
+      atitle:{fontSize:12,bold:true,alignment:"center"},
+      body:{fontSize:11,alignment:"justify",lineHeight:1.34}
+    }
+  };
+}
+
+/* ============ UI ============ */
+var GRID=document.getElementById("grid");
+var CATALOG=document.getElementById("catalog");
+var EDITOR=document.getElementById("editor");
+var FORM=document.getElementById("formBody");
+var FRAME=document.getElementById("frame");
+var FRAMEMSG=document.getElementById("frameMsg");
+var shared={}, current=null, state={}, prevURL=null, debTimer=null;
+
+function romanLong(n){ return n.length>3; }
+function renderCatalog(filter){
+  GRID.innerHTML="";
+  ANEXOS.forEach(function(a){
+    if(filter&&filter!=="todos"&&a.tags.indexOf(filter)<0)return;
+    var card=document.createElement("button");
+    card.className="card"+(a.ref?" is-ref":"");
+    card.innerHTML=
+      '<span class="num'+(romanLong(a.num)?" long":"")+'">'+a.num+'</span>'+
+      '<span class="kicker">ANEXO '+a.num+(a.variant?'<span class="vtag">'+a.variant+'</span>':'')+'</span>'+
+      '<h3>'+a.title+'</h3>'+
+      '<p class="desc">'+a.desc+'</p>'+
+      '<span class="who">'+a.who+'</span>';
+    card.addEventListener("click",function(){openAnnex(a);});
+    GRID.appendChild(card);
+  });
+}
+
+document.getElementById("filters").addEventListener("click",function(e){
+  var b=e.target.closest(".chip"); if(!b)return;
+  [].forEach.call(this.querySelectorAll(".chip"),function(x){x.setAttribute("aria-pressed","false");});
+  b.setAttribute("aria-pressed","true");
+  renderCatalog(b.dataset.f);
+});
+
+function openAnnex(a){
+  current=a; state={};
+  a.fields.forEach(function(f){
+    if(f.sec||f.nota)return;
+    var val="";
+    if(f.common&&shared[f.k]!==undefined)val=shared[f.k];
+    if((val===""||val===undefined)&&f.def){ val=f.def==="today"?today():f.def; }
+    if(val!==""&&val!==undefined){ state[f.k]=val; if(f.common)shared[f.k]=val; }
+  });
+  document.getElementById("eK").innerHTML="ANEXO "+a.num+(a.variant?'<span class="vtag">'+a.variant+'</span>':'');
+  document.getElementById("eT").textContent=a.title;
+  document.getElementById("eNote").textContent=a.note;
+  buildForm(a);
+  CATALOG.style.display="none";
+  EDITOR.classList.add("on");
+  window.scrollTo(0,0);
+  computeNota();
+  schedulePreview(true);
+}
+
+function buildForm(a){
+  FORM.innerHTML="";
+  a.fields.forEach(function(f){
+    if(f.sec){ var s=document.createElement("div"); s.className="section-label"; s.textContent=f.sec; FORM.appendChild(s); return; }
+    if(f.nota){ var nb=document.createElement("div"); nb.className="nota-box"; nb.id="notaBox";
+      nb.innerHTML='<span class="lab">Nota parcial (ponderada)</span><span class="val" id="notaVal">—</span>'; FORM.appendChild(nb); return; }
+    var wrap=document.createElement("div");
+    wrap.className="field"+(f.half?" half":""); wrap.dataset.k=f.k;
+    var id="fld_"+f.k;
+    var html="";
+    if(f.t==="grade"){
+      wrap.className="grade-row"; wrap.dataset.k=f.k;
+      html='<label class="gl" for="'+id+'"><b>'+f.label+'</b></label>'+
+           '<span class="gw">peso '+f.peso+'</span>'+
+           '<input id="'+id+'" type="number" min="0" max="10" step="0.1" inputmode="decimal" data-grade="1" value="'+(state[f.k]!==undefined?state[f.k]:"")+'">';
+      wrap.innerHTML=html; FORM.appendChild(wrap);
+      wrap.querySelector("input").addEventListener("input",onInput); return;
+    }
+    if(f.label!=="")html+='<label for="'+id+'">'+f.label+'</label>';
+    var val=state[f.k]!==undefined?String(state[f.k]):"";
+    if(f.t==="text"||f.t==="date"||f.t==="time"){
+      html+='<input id="'+id+'" type="'+f.t+'" value="'+val.replace(/"/g,"&quot;")+'">';
+    }else if(f.t==="textarea"){
+      html+='<textarea id="'+id+'">'+val+'</textarea>';
+    }else if(f.t==="radio"){
+      html+='<div class="radios'+(f.inline?" inline":"")+'">';
+      f.opts.forEach(function(o,i){
+        var ov=typeof o==="object"?o.v:o, ol=typeof o==="object"?o.label:o;
+        var chk=(state[f.k]===ov)?" checked":"";
+        html+='<label class="radio"><input type="radio" name="'+f.k+'" value="'+ov+'"'+chk+'><span>'+ol+'</span></label>';
+      });
+      html+='</div>';
+    }
+    wrap.innerHTML=html;
+    FORM.appendChild(wrap);
+    var inp=wrap.querySelector("input,textarea,select");
+    if(f.t==="radio"){ [].forEach.call(wrap.querySelectorAll("input"),function(r){r.addEventListener("change",onInput);}); }
+    else if(inp){ inp.addEventListener("input",onInput); }
+  });
+  applyConditional();
+}
+
+function onInput(e){
+  var el=e.target;
+  if(el.dataset.grade){ var k=el.id.replace("fld_",""); state[k]=el.value; computeNota(); applyConditional(); schedulePreview(); return; }
+  var k2,val;
+  if(el.type==="radio"){ k2=el.name; val=el.value; }
+  else { k2=el.id.replace("fld_",""); val=el.value; }
+  state[k2]=val;
+  var f=current.fields.filter(function(x){return x.k===k2;})[0];
+  if(f&&f.common)shared[k2]=val;
+  applyConditional();
+  schedulePreview();
+}
+
+function applyConditional(){
+  current.fields.forEach(function(f){
+    if(!f.showIf)return;
+    var wrap=FORM.querySelector('[data-k="'+f.k+'"]');
+    if(!wrap)return;
+    wrap.style.display=f.showIf(state)?"":"none";
+  });
+}
+
+function computeNota(){
+  if(!current||current.id!=="anexo11")return;
+  var ws=0,sum=0,any=false;
+  current.fields.forEach(function(f){
+    if(f.t!=="grade")return;
+    var raw=state[f.k];
+    if(raw===undefined||raw==="")return;
+    var g=parseFloat(raw); if(isNaN(g))return;
+    if(g<0)g=0; if(g>10)g=10;
+    sum+=g*f.peso; ws+=f.peso; any=true;
+  });
+  var out=any?(sum/ws).toFixed(1).replace(".",","):"—";
+  window.__nota=any?out:"—";
+  var nv=document.getElementById("notaVal"); if(nv)nv.textContent=out;
+}
+
+/* preview + export */
+function currentFilename(){
+  var name=state.estudante||state.membro||state.avaliador||"PFC";
+  return "Anexo_"+current.num+"_"+slug(name)+".pdf";
+}
+function schedulePreview(now){
+  if(window.innerWidth<=900)return; /* no live frame on mobile */
+  clearTimeout(debTimer);
+  debTimer=setTimeout(renderPreview, now?60:420);
+}
+function renderPreview(){
+  try{
+    var dd=docDef(current,state);
+    pdfMake.createPdf(dd).getBlob(function(blob){
+      if(prevURL)URL.revokeObjectURL(prevURL);
+      prevURL=URL.createObjectURL(blob);
+      FRAME.style.display=""; FRAMEMSG.style.display="none";
+      FRAME.src=prevURL;
+    });
+  }catch(err){
+    FRAME.style.display="none"; FRAMEMSG.style.display="";
+    FRAMEMSG.textContent="Não foi possível gerar a prévia aqui. Use Baixar PDF.";
+  }
+}
+function doDownload(){ try{ pdfMake.createPdf(docDef(current,state)).download(currentFilename()); }catch(e){ alert("Falha ao gerar o PDF."); } }
+function doOpen(){ try{ pdfMake.createPdf(docDef(current,state)).open(); }catch(e){ alert("Falha ao abrir o PDF."); } }
+
+document.getElementById("download").addEventListener("click",doDownload);
+document.getElementById("open").addEventListener("click",doOpen);
+document.getElementById("mDownload").addEventListener("click",doDownload);
+document.getElementById("mOpen").addEventListener("click",doOpen);
+
+document.getElementById("back").addEventListener("click",function(){
+  EDITOR.classList.remove("on");
+  CATALOG.style.display="";
+  if(prevURL){URL.revokeObjectURL(prevURL);prevURL=null;}
+  FRAME.removeAttribute("src");
+  window.scrollTo(0,0);
+});
+
+renderCatalog("todos");
+</script>
+</body>
+</html>
